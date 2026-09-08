@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import {
   Search, ArrowLeft, Plane, Globe, Package, Shield, Clock,
   Truck, Warehouse, FileText, Boxes, Thermometer, AlertTriangle,
-  ShieldCheck, Building2, Route, ChevronLeft, Newspaper
+  ShieldCheck, Building2, Route, ChevronLeft, Newspaper,
+  Ship, Train, MapPin, Award, CheckCircle2, Users
 } from 'lucide-react';
 
 const services = [
@@ -11,7 +12,7 @@ const services = [
   { icon: Route, title: 'فرودگاه‌به‌فرودگاه', desc: 'سرویس سریع بین فرودگاه‌های بین‌المللی', slug: 'airport-to-airport' },
   { icon: Package, title: 'درب‌تا‌درب', desc: 'دریافت از درب انبار شما تا تحویل به مقصد نهایی', slug: 'door-to-door' },
   { icon: Plane, title: 'چارتر', desc: 'اجاره کامل یا جزئی هواپیمای باری اختصاصی', slug: 'charter' },
-  { icon: Boxes, title: 'کانسولیدیشن', desc: 'تجمیع محموله‌های کوچک برای کاهش هزینه', slug: 'consolidation' },
+  { icon: Boxes, title: 'بار تجمیعی', desc: 'تجمیع محموله‌های کوچک برای کاهش هزینه', slug: 'consolidation' },
   { icon: Building2, title: 'بار پروژه‌ای', desc: 'حمل محموله‌های سنگین و ابعاد بزرگ پروژه‌ای', slug: 'project-cargo' },
   { icon: Thermometer, title: 'کالای فاسدشدنی', desc: 'حمل با کنترل دما برای مواد غذایی و دارو', slug: 'perishable' },
   { icon: AlertTriangle, title: 'کالای خطرناک', desc: 'حمل DG با رعایت استانداردهای IATA', slug: 'dangerous-goods' },
@@ -28,6 +29,54 @@ const corridors = [
   { name: 'CIS', cities: 'مسکو، آلماتی، تاشکند' },
   { name: 'جنوب شرق آسیا', cities: 'بانکوک، سنگاپور، کوالالامپور' },
   { name: 'آفریقا', cities: 'نایروبی، لاکوس، ژوهانسبورگ' },
+];
+
+const crossTradeRoutes = [
+  { from: 'چین', to: 'امارات', fromCity: 'شانگهای', toCity: 'دبی' },
+  { from: 'آلمان', to: 'کنیا', fromCity: 'فرانکفورت', toCity: 'نایروبی' },
+  { from: 'سنگاپور', to: 'اروپا', fromCity: 'سنگاپور', toCity: 'فرانکفورت' },
+];
+
+const specialCargoTypes = [
+  { name: 'دارو', icon: Shield },
+  { name: 'کالای فاسدشدنی', icon: Thermometer },
+  { name: 'کالای گرانبها', icon: Award },
+  { name: 'کالای خطرناک', icon: AlertTriangle },
+  { name: 'بار پروژه‌ای', icon: Building2 },
+  { name: 'فریت بار', icon: Package },
+];
+
+const whyUsPillars = [
+  {
+    icon: Shield,
+    title: 'بیش از نیم قرن پشتوانه',
+    desc: '۵۰+ سال تجربه کشتیرانی ایران در حمل‌ونقل بین‌المللی'
+  },
+  {
+    icon: Globe,
+    title: 'شبکه و دسترسی بین‌المللی',
+    desc: 'نمایندگی‌های فعال در ۶ کریدور اصلی جهانی'
+  },
+  {
+    icon: Route,
+    title: 'راهکارهای چندوجهی یکپارچه',
+    desc: 'ترکیب هوشمندانه حمل هوایی، دریایی، ریلی و جاده‌ای'
+  },
+  {
+    icon: Award,
+    title: 'تخصص در محموله‌های ویژه',
+    desc: 'تیم متخصص IATA برای کالاهای حساس و خطرناک'
+  },
+  {
+    icon: MapPin,
+    title: 'راهکارهای Cross Trade',
+    desc: 'حمل مستقیم بین دو کشور بدون عبور از ایران'
+  },
+  {
+    icon: Users,
+    title: 'تیم حرفه‌ای حمل هوایی',
+    desc: 'کارشناسان باتجربه در عملیات کارگو هوایی'
+  }
 ];
 
 function Counter({ end, suffix = '', duration = 2000 }: { end: number; suffix?: string; duration?: number }) {
@@ -57,6 +106,76 @@ function Counter({ end, suffix = '', duration = 2000 }: { end: number; suffix?: 
   }, [visible, end, duration]);
 
   return <div ref={ref} className="text-3xl lg:text-4xl font-bold text-brand-orange">{count}{suffix}</div>;
+}
+
+// Global Time Widget Component
+function GlobalTimeWidget() {
+  const [times, setTimes] = useState<{ city: string; time: string; date: string }[]>([]);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const cities = [
+        { name: 'تهران', timezone: 'Asia/Tehran' },
+        { name: 'دبی', timezone: 'Asia/Dubai' },
+        { name: 'شانگهای', timezone: 'Asia/Shanghai' },
+        { name: 'فرانکفورت', timezone: 'Europe/Berlin' },
+        { name: 'لندن', timezone: 'Europe/London' },
+      ];
+
+      const now = new Date();
+      const persianDate = new Intl.DateTimeFormat('fa-IR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(now);
+
+      const gregorianDate = new Intl.DateTimeFormat('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(now);
+
+      const timesData = cities.map(city => ({
+        city: city.name,
+        time: new Intl.DateTimeFormat('fa-IR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: city.timezone,
+          hour12: false
+        }).format(now),
+        date: city.timezone === 'Asia/Tehran' ? persianDate : gregorianDate
+      }));
+
+      setTimes(timesData);
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="bg-white rounded-xl border border-border-light p-6">
+      <div className="flex items-center gap-2 mb-4">
+        <Globe size={20} className="text-brand-green" />
+        <h4 className="font-bold text-brand-dark">زمان جهانی</h4>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+        {times.map((t, i) => (
+          <div key={i} className="text-center p-3 bg-brand-light rounded-lg">
+            <p className="text-xs text-gray-500 mb-1">{t.city}</p>
+            <p className="text-lg font-bold text-brand-dark">{t.time}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-4 pt-4 border-t border-border-light flex justify-between text-xs text-gray-500">
+        <span>{times.find(t => t.city === 'تهران')?.date}</span>
+        <span>{times.find(t => t.city === 'لندن')?.date}</span>
+      </div>
+    </div>
+  );
 }
 
 export default function Home() {

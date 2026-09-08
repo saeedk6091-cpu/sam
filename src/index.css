@@ -1,115 +1,22 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-brand-orange: #D2622A;
-  --color-brand-orange-hover: #B54F1F;
-  --color-brand-green: #3E8E7E;
-  --color-brand-green-hover: #2F7263;
-  --color-brand-dark: #0F1B24;
-  --color-brand-light: #F7F8FA;
-  --color-text-primary: #1F2933;
-  --color-border-light: #E4E7EB;
-  --font-family-vazir: 'Vazirmatn', sans-serif;
-  --font-family-inter: 'Inter', sans-serif;
-}
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
 
 * {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+}
+
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background-color: #F7F8FA;
+  color: #1F2933;
+  line-height: 1.6;
 }
 
 html {
   scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Vazirmatn', 'Inter', sans-serif;
-  color: #1F2933;
-  background-color: #F7F8FA;
-  direction: rtl;
-}
-
-[dir="ltr"] body,
-.ltr {
-  font-family: 'Inter', 'Vazirmatn', sans-serif;
-  direction: ltr;
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes countUp {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(210, 98, 42, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 12px rgba(210, 98, 42, 0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-count-up {
-  animation: countUp 0.8s ease-out forwards;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
-}
-
-.gradient-hero {
-  background: linear-gradient(135deg, #0F1B24 0%, #1a2f3d 50%, #0F1B24 100%);
-}
-
-.gradient-orange {
-  background: linear-gradient(135deg, #D2622A 0%, #B54F1F 100%);
-}
-
-.gradient-green {
-  background: linear-gradient(135deg, #3E8E7E 0%, #2F7263 100%);
-}
-
-.text-gradient-orange {
-  background: linear-gradient(135deg, #D2622A, #e8854a);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #F7F8FA;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #3E8E7E;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #2F7263;
 }
