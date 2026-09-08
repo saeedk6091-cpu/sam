@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Vazirmatn', Tahoma, sans-serif;
+  background-color: #F7F8FA;
+  color: #1F2933;
+  line-height: 1.6;
+}
+
+html {
+  scroll-behavior: smooth;
+}
